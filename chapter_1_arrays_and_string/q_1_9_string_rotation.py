@@ -8,9 +8,7 @@ import unittest
 
 def is_substring(string_one: str = "", string_two: str = "") -> bool:
     string_one_counter = 0
-    string_two_counter = 0
-    for s2_index, character in enumerate(string_two):
-        string_two_counter = s2_index
+    for string_two_counter, character in enumerate(string_two):
         while string_one[string_one_counter] == string_two[string_two_counter]:
             string_two_counter = string_two_counter + 1 if string_two_counter < len(string_two) - 1 else 0
             if string_one_counter < len(string_one) - 1:
