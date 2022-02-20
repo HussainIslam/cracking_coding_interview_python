@@ -5,12 +5,11 @@ import unittest
 
 
 def check_unique_characters_in_string(target_string: str = "") -> bool:
-    character_set = set()
-    for character in list(target_string):
-        if character in character_set:
-            return False
-        else:
-            character_set.add(character)
+    length = len(target_string)
+    for i in range(length):
+        for j in range(i + 1, length):
+            if target_string[i] == target_string[j]:
+                return False
     return True
 
 
