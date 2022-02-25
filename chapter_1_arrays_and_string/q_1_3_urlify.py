@@ -7,24 +7,37 @@ import unittest
 
 
 def urlify(url: str = "") -> str:
-    if len(url) > 0:
-        return ''.join(["%20" if character == " " else character for character in list(url)])
-    return url
+    return ''.join(["%20" if character == " " else character for character in url])
+
+
+def urlify_reverse(url: str = "") -> str:
+    encoded_url = ["%20"] * len(url)
+    for index, character in enumerate(url):
+        encoded_url[len(url) - index - 1] = "%20" if url[len(url) - index - 1] == " " else url[len(url) - index - 1]
+    return ''.join(encoded_url)
 
 
 class TestURLify(unittest.TestCase):
 
-    def test_return_type(self):
-        self.assertEqual(type(urlify("test")), str)
-
-    def test_no_parameter(self):
-        self.assertEqual(urlify(), "")
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.methods = [
+            'urlify',
+            'urlify_reverse',
+        ]
+        cls.data_sets = [
+            ("this  is  test", "this%20%20is%20%20test"),
+            ("this is test", "this%20is%20test"),
+            ("a ", "a%20"),
+            (" abc", "%20abc")
+        ]
 
     def test_use_cases(self):
-        self.assertEqual(urlify("this  is  test"), "this%20%20is%20%20test")
-        self.assertEqual(urlify("this is test"), "this%20is%20test")
-        self.assertEqual(urlify("a "), "a%20")
-        self.assertEqual(urlify(" abc"), "%20abc")
+        for method in self.methods:
+            print(f'-------------- TESTING: {method} --------------')
+            for data_set in self.data_sets:
+                print(f'Test: {data_set[0]}, {data_set[1]}')
+                self.assertEqual(data_set[1], globals()[method](data_set[0]))
 
 
 if __name__ == '__main__':
