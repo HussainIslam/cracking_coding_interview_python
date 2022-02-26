@@ -8,7 +8,6 @@ Example:
     Output: True (permutation: taco cat, atco cta, etc
 """
 import unittest
-import string
 
 
 def is_palindrome_permutation(input_string: str = "") -> bool:
@@ -25,14 +24,11 @@ def is_palindrome_permutation(input_string: str = "") -> bool:
 
 def is_palindrome_permutation_counter(input_string: str = "") -> bool:
     character_list = [0] * 26
-    valid_characters = 0
     for character in input_string:
         if 65 <= ord(character) <= 90:
             character_list[ord(character) - 65] += 1
-            valid_characters += 1
         if 97 <= ord(character) <= 122:
             character_list[ord(character) - 97] += 1
-            valid_characters += 1
     odd_counter = 0
     for character_counter in character_list:
         if character_counter % 2:
