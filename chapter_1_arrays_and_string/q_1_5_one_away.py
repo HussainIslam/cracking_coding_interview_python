@@ -44,15 +44,52 @@ def is_one_insert_away(string_one: str, string_two: str) -> bool:
     return True
 
 
+def is_one_away_combined(string_one: str = "", string_two: str = "") -> bool:
+    # if the absolute difference between the lengths of the strings is more than 1,
+    # they are definitely more than one edit away
+    if abs(len(string_one) - len(string_two)) > 1:
+        return False
+    if len(string_one) > len(string_two):
+        long_string = string_one
+        short_string = string_two
+    else:
+        long_string = string_two
+        short_string = string_one
+    index_long = 0
+    index_short = 0
+    found_difference = False
+    while index_long < len(long_string) and index_short < len(short_string):
+        if long_string[index_long] != short_string[index_short]:
+            if found_difference:
+                return False
+            found_difference = True
+            if len(long_string) == len(short_string):
+                index_short += 1
+        else:
+            index_short += 1
+        index_long += 1
+    return True
+
+
 class TestOneAway(unittest.TestCase):
-    def test_return_type(self):
-        self.assertEqual(type(is_one_away()), bool)
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.data_sets = [
+            (("pale", "ple"), True),
+            (("pales", "pale"), True),
+            (("pale", "bale"), True),
+            (("pale", "bake"), False)
+        ]
+        cls.methods = [
+            'is_one_away',
+            'is_one_away_combined',
+        ]
 
     def test_use_cases(self):
-        self.assertTrue(is_one_away("pale", "ple"))
-        self.assertTrue(is_one_away("pales", "pale"))
-        self.assertTrue(is_one_away("pale", "bale"))
-        self.assertFalse(is_one_away("pale", "bake"))
+        for method in self.methods:
+            for data_set in self.data_sets:
+                assert globals()[method](data_set[0][0], data_set[0][1]) == data_set[1]
 
 
 if __name__ == '__main__':
